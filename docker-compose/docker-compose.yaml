@@ -1,11 +1,12 @@
-version: '3.2'
+version: '3.8'
 
 services:
-  kepler:
+  kepler: &kepler
     image: quay.io/sustainable_computing_io/kepler:latest
-    privileged: true
     ports: 
       - "9100:9100"
+    privileged: true
+    pid: host
     volumes:
       - type: bind
         source: /proc
@@ -16,17 +17,48 @@ services:
       - type: bind
         source: ./kepler/etc/kepler
         target: /etc/kepler
+      - type: bind
+        source: ../_output/bin/kepler
+        target: /usr/bin/kepler-foo
 
     command:
       - -address
       -  "0.0.0.0:9100"
+      - -v
+      - "5"
       - -enable-cgroup-id=true
       - -enable-gpu=false
-      - -v=5
     networks:
       - kepler-network
     cap_add:
       - ALL
+
+  ### 📦 kepler-changes
+  kepler-mods:
+    <<: *kepler
+    image: quay.io/sthaha/kepler:latest-dcgm
+    ports: 
+      - "9200:9100"
+
+
+  ### 📦 scaphandre
+  scaphandre:
+    image: hubblo/scaphandre
+    privileged: true
+    ports: 
+      - "8880:8080"
+    volumes:
+      - type: bind
+        source: /proc
+        target: /proc
+      - type: bind
+        source: /sys/class/powercap
+        target: /sys/class/powercap
+    command: ["prometheus"]                         
+    networks:
+      - kepler-network
+
+  ### 📦 prometheus
   prometheus:
     build:
       context: ./prom
@@ -34,8 +66,15 @@ services:
       - "9090:9090"
     volumes: 
       - promdata-kepler:/prometheus 
+      - type: bind
+        source: ./prom/prometheus.yml
+        target: /etc/prometheus/prometheus.yml
+      - type: bind
+        source: ./prom/rules
+        target: /etc/prometheus/rules
     networks:
       - kepler-network
+      - virt-net
 
 
   grafana:
@@ -46,7 +85,7 @@ services:
       GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: "/var/lib/grafana/dashboards/sample/kepler-dashboard.json"
     depends_on:
       - prometheus
-    ports: 
+    ports:
       - "3000:3000"
     networks:
       - kepler-network
@@ -54,11 +93,18 @@ services:
       - type: bind
         source: "./grafana/dashboards/kepler-dashboard.json"
         target: "/var/lib/grafana/dashboards/sample/kepler-dashboard.json"
-    
+
+      - type: bind
+        source: "./grafana/dashboards/scaphandre-dashboard.json"
+        target: "/var/lib/grafana/dashboards/sample/scaphandre-dashboard.json"
+
 volumes:
   promdata-kepler:
 
 networks:
+  virt-net:
+    name: virt-net
+    external: true
   kepler-network:
     driver: bridge
     ipam:
