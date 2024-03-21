@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  kepler:
+    image: quay.io/sustainable_computing_io/kepler:latest
+    pid: host
+    privileged: true
+    ports: 
+      - "9100:9100"
+    volumes:
+      - type: bind
+        source: /proc
+        target: /proc
+      - type: bind
+        source: /sys
+        target: /sys
+      - type: bind
+        source: ./kepler/etc/kepler
+        target: /etc/kepler
+      - type: bind
+        source: ./kepler/var/lib/kepler/data
+        target: /var/lib/kepler/data
+    cap_add:
+      - ALL
+
+    command:
+      - -address
+      -  "0.0.0.0:9100"
+      - -v
+      - "8"
+      - -enable-cgroup-id=true
+      - -enable-gpu=false
