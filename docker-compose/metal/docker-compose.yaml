@@ -17,9 +17,10 @@ services:
       - type: bind
         source: ./kepler/etc/kepler
         target: /etc/kepler
-      - type: bind
-        source: ../_output/bin/kepler
-        target: /usr/bin/kepler-foo
+      # TODO: fix this so that kepler binary can be just mounted
+      # - type: bind
+      #   source: ../_output/bin/kepler
+      #   target: /usr/bin/kepler-foo
 
     command:
       - -address
@@ -36,6 +37,7 @@ services:
   ### 📦 kepler-changes
   kepler-mods:
     <<: *kepler
+    # WARN: replace this with your kepler image
     image: quay.io/sthaha/kepler:latest-dcgm
     ports: 
       - "9200:9100"
@@ -54,7 +56,7 @@ services:
       - type: bind
         source: /sys/class/powercap
         target: /sys/class/powercap
-    command: ["prometheus"]                         
+    command: ["prometheus"]
     networks:
       - kepler-network
 
@@ -75,7 +77,6 @@ services:
     networks:
       - kepler-network
       - virt-net
-
 
   grafana:
     build:
@@ -102,9 +103,17 @@ volumes:
   promdata-kepler:
 
 networks:
+  #  NOTE: External network created using the following command
+  #  to allow access to VM from prometheus container
+  #
+  #  docker network create \
+  #    --driver=macvlan \
+  #    --subnet=192.168.124.0/24 \
+  #    -o parent=virbr0 virt-net
   virt-net:
     name: virt-net
     external: true
+
   kepler-network:
     driver: bridge
     ipam:
