@@ -15,7 +15,7 @@ services:
         source: /sys
         target: /sys
       - type: bind
-        source: ./kepler/etc/kepler/config
+        source: ./kepler/etc/kepler
         target: /etc/kepler
       # TODO: fix this so that kepler binary can be just mounted
       # - type: bind

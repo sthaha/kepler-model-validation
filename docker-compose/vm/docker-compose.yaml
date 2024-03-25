@@ -15,7 +15,7 @@ services:
         source: /sys
         target: /sys
       - type: bind
-        source: ./kepler/etc/kepler
+        source: ./kepler/etc/kepler/config
         target: /etc/kepler
       - type: bind
         source: ./kepler/var/lib/kepler/data
