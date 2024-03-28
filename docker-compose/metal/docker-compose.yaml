@@ -34,13 +34,13 @@ services:
     cap_add:
       - ALL
 
-  ### 📦 kepler-changes
-  kepler-mods:
-    <<: *kepler
-    # WARN: replace this with your kepler image
-    image: quay.io/sthaha/kepler:latest-dcgm
-    ports: 
-      - "9200:9100"
+  ### 📦 kepler with any modifications
+  # kepler-mods:
+  #   <<: *kepler
+  #   # WARN: replace this with your kepler image
+  #   image: quay.io/sthaha/kepler:latest-dcgm
+  #   ports: 
+  #     - "9200:9100"
 
 
   ### 📦 scaphandre
@@ -64,16 +64,17 @@ services:
   prometheus:
     build:
       context: ./prom
-    ports: 
+    ports:
       - "9090:9090"
     volumes: 
       - promdata-kepler:/prometheus 
       - type: bind
         source: ./prom/prometheus.yml
         target: /etc/prometheus/prometheus.yml
-      - type: bind
-        source: ./prom/rules
-        target: /etc/prometheus/rules
+
+      # - type: bind
+      #   source: ./prom/rules
+      #   target: /etc/prometheus/rules
     networks:
       - kepler-network
       - virt-net
@@ -106,10 +107,22 @@ networks:
   #  NOTE: External network created using the following command
   #  to allow access to VM from prometheus container
   #
+  # use:
+  # ❯ ip addr show virbr0
+  #
+  #  │ 17: virbr0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+  #  │  link/ether 58:52:00:a6:77:2f brd ff:ff:ff:ff:ff:ff
+  #  │  inet 192.168.124.1/24 brd 192.168.124.255 scope global virbr0
+  #  │  valid_lft forever preferred_lft forever
+  #
+  # look for `inet` in the output and use that for the subnet in the next command
+  #
+  #
   #  docker network create \
   #    --driver=macvlan \
   #    --subnet=192.168.124.0/24 \
   #    -o parent=virbr0 virt-net
+  #
   virt-net:
     name: virt-net
     external: true
