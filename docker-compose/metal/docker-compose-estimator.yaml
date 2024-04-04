@@ -1,0 +1,159 @@
+version: '3.8'
+
+services:
+
+  estimator:
+    image: quay.io/sustainable_computing_io/kepler_model_server:latest
+    privileged: true
+    pid: host
+    entrypoint: ["python3.8", "src/estimate/estimator.py"]
+    volumes:
+      - type: bind
+        source: ./kepler/etc/kepler
+        target: /etc/kepler
+      - type: bind
+        source: /tmp
+        target: /tmp
+      - type: bind
+        source: /mnt
+        target: /mnt
+    networks:
+      - kepler-network
+    cap_add:
+      - ALL
+  
+  kepler: &kepler
+    image: quay.io/sustainable_computing_io/kepler:latest
+    environment:
+      - NODE_COMPONENTS_ESTIMATOR=true
+      - NODE_COMPONENTS_INIT_URL=https://raw.githubusercontent.com/sustainable-computing-io/kepler-model-db/main/models/v0.6/nx12/std_v0.6/rapl/AbsPower/BPFOnly/GradientBoostingRegressorTrainer_1.zip
+      - NODE_TOTAL_ESTIMATOR=true
+      - NODE_TOTAL_INIT_URL=https://raw.githubusercontent.com/sustainable-computing-io/kepler-model-db/main/models/v0.6/nx12/std_v0.6/acpi/AbsPower/BPFOnly/GradientBoostingRegressorTrainer_1.zip
+    ports: 
+      - "9100:9100"
+    privileged: true
+    pid: host
+    volumes:
+      - type: bind
+        source: /proc
+        target: /proc
+      - type: bind
+        source: /sys
+        target: /sys
+      - type: bind
+        source: /tmp
+        target: /tmp
+      - type: bind
+        source: ./kepler/etc/kepler
+        target: /etc/kepler
+      # TODO: fix this so that kepler binary can be just mounted
+      # - type: bind
+      #   source: ../_output/bin/kepler
+      #   target: /usr/bin/kepler-foo
+
+    # command:
+    #   - "/bin/sh"
+    #   - "-c"
+    #   - "until [ -e /tmp/estimator.sock ]; do sleep 1; done && /usr/bin/kepler -kernel-source-dir=/usr/share/kepler/kernel_sources"
+    entrypoint: ["/bin/sh", "-c"] 
+    command: 
+      - "until [ -e /tmp/estimator.sock ]; do sleep 1; done && /usr/bin/kepler -kernel-source-dir=/usr/share/kepler/kernel_sources"
+      - -address
+      - "0.0.0.0:9100"
+      # - -v
+      # - "5"
+      # - -enable-cgroup-id=true
+      # - -enable-gpu=false
+    networks:
+      - kepler-network
+    cap_add:
+      - ALL
+
+
+  # for me to set this up, I must create my own kepler image at quay where i push changes to for testing
+  # currently do not need for validation
+  ### 📦 kepler-changes
+  # kepler-mods:
+  #   <<: *kepler
+  #   # WARN: replace this with your kepler image
+  #   image: quay.io/sthaha/kepler:latest-dcgm
+  #   ports: 
+  #     - "9200:9100"
+
+
+  ### 📦 scaphandre
+  # scaphandre:
+  #   image: hubblo/scaphandre
+  #   privileged: true
+  #   ports: 
+  #     - "8880:8080"
+  #   volumes:
+  #     - type: bind
+  #       source: /proc
+  #       target: /proc
+  #     - type: bind
+  #       source: /sys/class/powercap
+  #       target: /sys/class/powercap
+  #   command: ["prometheus"]
+  #   networks:
+  #     - kepler-network
+
+  ### 📦 prometheus
+  # prometheus:
+  #   build:
+  #     context: ./prom
+  #   ports: 
+  #     - "9091:9090"
+  #   volumes: 
+  #     - promdata-kepler:/prometheus 
+  #     - type: bind
+  #       source: ./prom/prometheus.yml
+  #       target: /etc/prometheus/prometheus.yml
+  #     - type: bind
+  #       source: ./prom/rules
+  #       target: /etc/prometheus/rules
+  #   networks:
+  #     - kepler-network
+  #     - virt-net
+
+#   grafana:
+#     build:
+#       context: ./grafana
+#     environment:
+#       GF_SECURITY_ADMIN_PASSWORD: "admin"
+#       GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: "/var/lib/grafana/dashboards/sample/kepler-dashboard.json"
+#     depends_on:
+#       - prometheus
+#     ports:
+#       - "3000:3000"
+#     networks:
+#       - kepler-network
+#     volumes:
+#       - type: bind
+#         source: "./grafana/dashboards/kepler-dashboard.json"
+#         target: "/var/lib/grafana/dashboards/sample/kepler-dashboard.json"
+
+#       - type: bind
+#         source: "./grafana/dashboards/scaphandre-dashboard.json"
+#         target: "/var/lib/grafana/dashboards/sample/scaphandre-dashboard.json"
+
+# volumes:
+#   promdata-kepler:
+
+networks:
+  #  NOTE: External network created using the following command
+  #  to allow access to VM from prometheus container
+  #
+  #  docker network create \
+  #    --driver=macvlan \
+  #    --subnet=192.168.124.0/24 \
+  #    -o parent=virbr0 virt-net
+  # virt-net:
+  #   name: virt-net
+  #   external: true
+
+  kepler-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.24.0/24
