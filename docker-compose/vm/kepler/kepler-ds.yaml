@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: kepler
+  namespace: kepler-operator
+spec:
+  template:
+    metadata:
+      name: kepler
+      namespace: kepler-operator
+    spec:
+      containers:
+      - args:
+        - until [ -e /tmp/estimator.sock ]; do sleep 1; done && 
+            /usr/bin/kepler -address 0.0.0.0:9103 \
+              -enable-cgroup-id=true \
+            -enable-gpu=$(ENABLE_GPU) \
+            -v=$(KEPLER_LOG_LEVEL)
+            -kernel-source-dir=/usr/share/kepler/kernel_sources
+        command:
+        - /bin/sh
+        - -c
+        env:
+        - name: NODE_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.hostIP
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        - name: KEPLER_LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              key: KEPLER_LOG_LEVEL
+              name: kepler
+        - name: ENABLE_GPU
+          valueFrom:
+            configMapKeyRef:
+              key: ENABLE_GPU
+              name: kepler
+        image: quay.io/sustainable_computing_io/kepler:latest
+        name: kepler
+        ports:
+        - containerPort: 9103
+          name: http
+          protocol: TCP
+        securityContext:
+          privileged: true
+
+        volumeMounts:
+        - mountPath: /lib/modules
+          name: lib-modules
+          readOnly: true
+        - mountPath: /sys
+          name: tracing
+          readOnly: true
+        - mountPath: /usr/src/kernels
+          name: kernel-src
+          readOnly: true
+        - mountPath: /proc
+          name: proc
+        - mountPath: /etc/kepler/kepler.config
+          name: cfm
+        - mountPath: /tmp
+          name: tmp
+  ### esitimator container ###
+      - args:
+        - -u
+        - src/estimate/estimator.py
+        command:
+        - python3.8
+        image: quay.io/sustainable_computing_io/kepler_model_server:v0.7.7
+        name: estimator
+        volumeMounts:
+        - mountPath: /etc/kepler/kepler.config
+          name: cfm
+          readOnly: true
+        - mountPath: /mnt
+          name: mnt
+        - mountPath: /tmp
+          name: tmp
+
+      dnsPolicy: ClusterFirstWithHostNet
+      hostPID: true
+      nodeSelector:
+        kubernetes.io/os: linux
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: kepler
+      serviceAccountName: kepler
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - operator: Exists
+      volumes:
+      - hostPath:
+          path: /lib/modules
+          type: ""
+        name: lib-modules
+      - hostPath:
+          path: /sys
+          type: ""
+        name: tracing
+      - hostPath:
+          path: /proc
+          type: ""
+        name: proc
+      - hostPath:
+          path: /usr/src/kernels
+          type: ""
+        name: kernel-src
+      - configMap:
+          defaultMode: 420
+          name: kepler
+        name: cfm
+      - emptyDir: {}
+        name: mnt
+      - emptyDir: {}
+        name: tmp

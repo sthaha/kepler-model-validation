@@ -3,10 +3,14 @@ version: '3.8'
 services:
   kepler:
     image: quay.io/sustainable_computing_io/kepler:latest
-    pid: host
-    privileged: true
     ports: 
       - "9100:9100"
+      # - "9880:8880" # to debug if kepler has correctly started
+    privileged: true
+    pid: host
+    networks:
+        - kepler-network
+
     volumes:
       - type: bind
         source: /proc
@@ -17,16 +21,78 @@ services:
       - type: bind
         source: ./kepler/etc/kepler
         target: /etc/kepler
+
+        # NOTE: MODELS
       - type: bind
         source: ./kepler/var/lib/kepler/data
         target: /var/lib/kepler/data
+
+        # NOTE: for estimator - kepler communication
+      - kepler-tmp:/tmp 
     cap_add:
       - ALL
 
+    entrypoint:
+      - /usr/bin/bash
+      - -c
+
     command:
-      - -address
-      -  "0.0.0.0:9100"
-      - -v
-      - "8"
-      - -enable-cgroup-id=true
-      - -enable-gpu=false
+      - echo "Waiting for estimator socket";
+        until [[ -e /tmp/estimator.sock ]]; do
+          echo " ... waiting for socket";
+          sleep 1;
+        done;
+        echo "starting kepler";
+        echo /usr/bin/kepler 
+          -address="0.0.0.0:9100"
+          -v="8";
+        /usr/bin/kepler
+          -address="0.0.0.0:9100"
+          -v="8"
+
+  estimator:
+    entrypoint:
+      - python3.8
+    command:
+      - -u
+      - src/estimate/estimator.py
+    image: quay.io/sustainable_computing_io/kepler_model_server:v0.7.7
+
+    volumes:
+      - type: bind
+        source: ./kepler/etc/kepler
+        target: /etc/kepler
+
+      - kepler-tmp:/tmp
+      - estimator-mnt:/mnt
+    networks:
+      - kepler-network
+
+
+  model-server:
+    entrypoint:
+      - python3.8
+    ports:
+      - 8100
+    command:
+      - -u
+      - src/server/model_server.py
+    image: quay.io/sustainable_computing_io/kepler_model_server:v0.7.7
+    volumes:
+      - type: bind
+        source: ./kepler/etc/kepler
+        target: /etc/kepler
+      - model-server-mnt:/mnt
+
+volumes:
+  kepler-tmp:
+  estimator-mnt:
+  model-server-mnt:
+
+
+networks:
+  kepler-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.139.0/24
