@@ -1,0 +1,788 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 4,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PDE6745920139CE56"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 10,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PDE6745920139CE56"
+          },
+          "editorMode": "code",
+          "expr": "rate(kepler_process_platform_joules_total{pid=\"2093543\", job=\"metal\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Metal / Process Platform Watts",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PDE6745920139CE56"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 14,
+        "x": 10,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PDE6745920139CE56"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "rate(kepler_process_package_joules_total{pid=\"2093543\", job=\"metal\"}[$__rate_interval])",
+          "fullMetaSearch": false,
+          "includeNullMetadata": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PDE6745920139CE56"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(kepler_process_package_joules_total{pid=\"2093543\", job=\"metal\"}[$__rate_interval]))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Metal / Process Package Watts",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PDE6745920139CE56"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 0,
+        "y": 10
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PDE6745920139CE56"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "rate(kepler_node_platform_joules_total{job=\"vm\"}[1m])",
+          "fullMetaSearch": false,
+          "includeNullMetadata": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "VM / Platform Watts",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PDE6745920139CE56"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 14,
+        "x": 10,
+        "y": 10
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PDE6745920139CE56"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum(rate(kepler_process_bpf_cpu_time_ms_total{job=\"vm\"}[1m]))",
+          "fullMetaSearch": false,
+          "includeNullMetadata": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "VM / Platform BFP cpu time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PDE6745920139CE56"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 14,
+        "x": 10,
+        "y": 18
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PDE6745920139CE56"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum(rate(kepler_process_bpf_cpu_time_ms_total{job=\"metal\", pid=\"2093543\"}[1m]))",
+          "fullMetaSearch": false,
+          "includeNullMetadata": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Metal / Process  BPF cpu time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PDE6745920139CE56"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "{cmdline=\"/usr/bin/qemu-system-x86_64-nameguest=f39,debug-threads=on-S-object{_qom-type_:_secret_,_id_:_masterKey0_,_format_:_raw_,_file_:_/home/st/.config/libvirt/qemu/lib/domain-3-f39/master-key.aes_}-machinepc-q35-8.1,usb=off,vmport=off,dump-guest-core=off,memory-backend=pc.ram,hpet=off,acpi=on-accelkvm-cpuSkylake-Client-IBRS,ss=on,vmx=on,pdcm=on,hypervisor=on,tsc-adjust=on,clflushopt=on,umip=on,md-clear=on,stibp=on,flush-l1d=on,arch-capabilities=on,ssbd=on,xsaves=on,pdpe1gb=on,ibpb=on,ibrs=on,amd-stibp=on,amd-ssbd=on,rsba=on,skip-l1dfl-vmentry=on,pschange-mc-no=on,hle=off,rtm=off-msize=4194304k-object{_qom-type_:_memory-backend-ram_,_id_:_pc.ram_,_size_:4294967296}-overcommitmem-lock=off-smp1,sockets=1,cores=1,threads=1-uuidff0e14d6-9d62-4f7b-844a-0c399743ba8c-no-user-config-nodefaults-chardevsocket,id=charmonitor,fd=25,server=on,wait=off-monchardev=charmonitor,id=monitor,mode=control-rtcbase=utc,driftfix=slew-globalkvm-pit.lost_tick_policy=delay-no-shutdown-globalICH9-LPC.disable_s3=1-globalICH9-LPC.disable_s4=1-bootstrict=on-device{_driver_:_pcie-root-port_,_port_:16,_chassis_:1,_id_:_pci.1_,_bus_:_pcie.0_,_multifunction_:true,_addr_:_0x2_}-device{_driver_:_pcie-root-port_,_port_:17,_chassis_:2,_id_:_pci.2_,_bus_:_pcie.0_,_addr_:_0x2.0x1_}-device{_driver_:_pcie-root-port_,_port_:18,_chassis_:3,_id_:_pci.3_,_bus_:_pcie.0_,_addr_:_0x2.0x2_}-device{_driver_:_pcie-root-port_,_port_:19,_chassis_:4,_id_:_pci.4_,_bus_:_pcie.0_,_addr_:_0x2.0x3_}-device{_driver_:_pcie-root-port_,_port_:20,_chassis_:5,_id_:_pci.5_,_bus_:_pcie.0_,_addr_:_0x2.0x4_}-device{_driver_:_pcie-root-port_,_port_:21,_chassis_:6,_id_:_pci.6_,_bus_:_pcie.0_,_addr_:_0x2.0x5_}-device{_driver_:_pcie-root-port_,_port_:22,_chassis_:7,_id_:_pci.7_,_bus_:_pcie.0_,_addr_:_0x2.0x6_}-device{_driver_:_pcie-root-port_,_port_:23,_chassis_:8,_id_:_pci.8_,_bus_:_pcie.0_,_addr_:_0x2.0x7_}-device{_driver_:_pcie-root-port_,_port_:24,_chassis_:9,_id_:_pci.9_,_bus_:_pcie.0_,_multifunction_:true,_addr_:_0x3_}-device{_driver_:_pcie-root-port_,_port_:25,_chassis_:10,_id_:_pci.10_,_bus_:_pcie.0_,_addr_:_0x3.0x1_}-device{_driver_:_pcie-root-port_,_port_:26,_chassis_:11,_id_:_pci.11_,_bus_:_pcie.0_,_addr_:_0x3.0x2_}-device{_driver_:_pcie-root-port_,_port_:27,_chassis_:12,_id_:_pci.12_,_bus_:_pcie.0_,_addr_:_0x3.0x3_}-device{_driver_:_pcie-root-port_,_port_:28,_chassis_:13,_id_:_pci.13_,_bus_:_pcie.0_,_addr_:_0x3.0x4_}-device{_driver_:_pcie-root-port_,_port_:29,_chassis_:14,_id_:_pci.14_,_bus_:_pcie.0_,_addr_:_0x3.0x5_}-device{_driver_:_qemu-xhci_,_p2_:15,_p3_:15,_id_:_usb_,_bus_:_pci.2_,_addr_:_0x0_}-device{_driver_:_virtio-serial-pci_,_id_:_virtio-serial0_,_bus_:_pci.3_,_addr_:_0x0_}-blockdev{_driver_:_file_,_filename_:_/home/st/virt/vms/f39/f39.qcow2_,_node-name_:_libvirt-2-storage_,_auto-read-only_:true,_discard_:_unmap_}-blockdev{_node-name_:_libvirt-2-format_,_read-only_:false,_driver_:_qcow2_,_file_:_libvirt-2-storage_,_backing_:null}-device{_driver_:_virtio-blk-pci_,_bus_:_pci.4_,_addr_:_0x0_,_drive_:_libvirt-2-format_,_id_:_virtio-disk0_,_bootindex_:1}-blockdev{_driver_:_file_,_filename_:_/home/st/virt/vms/f39/f39-cidata.iso_,_node-name_:_libvirt-1-storage_,_auto-read-only_:true,_discard_:_unmap_}-blockdev{_node-name_:_libvirt-1-format_,_read-only_:false,_driver_:_raw_,_file_:_libvirt-1-storage_}-device{_driver_:_virtio-blk-pci_,_bus_:_pci.5_,_addr_:_0x0_,_drive_:_libvirt-1-format_,_id_:_virtio-disk1_}-netdev{_type_:_tap_,_fd_:_28_,_vhost_:true,_vhostfd_:_26_,_id_:_hostnet0_}-device{_driver_:_virtio-net-pci_,_netdev_:_hostnet0_,_id_:_net0_,_mac_:_52:54:00:1c:52:e7_,_bus_:_pci.1_,_addr_:_0x0_}-chardevpty,id=charserial0-device{_driver_:_isa-serial_,_chardev_:_charserial0_,_id_:_serial0_,_index_:0}-chardevsocket,id=charchannel0,fd=24,server=on,wait=off-device{_driver_:_virtserialport_,_bus_:_virtio-serial0.0_,_nr_:1,_chardev_:_charchannel0_,_id_:_channel0_,_name_:_org.qemu.guest_agent.0_}-chardevspicevmc,id=charchannel1,name=vdagent-device{_driver_:_virtserialport_,_bus_:_virtio-serial0.0_,_nr_:2,_chardev_:_charchannel1_,_id_:_channel1_,_name_:_com.redhat.spice.0_}-device{_driver_:_usb-tablet_,_id_:_input0_,_bus_:_usb.0_,_port_:_1_}-audiodev{_id_:_audio1_,_driver_:_spice_}-spiceport=5900,addr=localhost,disable-ticketing=on,image-compression=off,seamless-migration=on-device{_driver_:_virtio-vga_,_id_:_video0_,_max_outputs_:1,_bus_:_pcie.0_,_addr_:_0x1_}-device{_driver_:_ich9-intel-hda_,_id_:_sound0_,_bus_:_pcie.0_,_addr_:_0x1b_}-device{_driver_:_hda-duplex_,_id_:_sound0-codec0_,_bus_:_sound0.0_,_cad_:0,_audiodev_:_audio1_}-globalICH9-LPC.noreboot=off-watchdog-actionreset-chardevspicevmc,id=charredir0,name=usbredir-device{_driver_:_usb-redir_,_chardev_:_charredir0_,_id_:_redir0_,_bus_:_usb.0_,_port_:_2_}-chardevspicevmc,id=charredir1,name=usbredir-device{_driver_:_usb-redir_,_chardev_:_charredir1_,_id_:_redir1_,_bus_:_usb.0_,_port_:_3_}-device{_driver_:_virtio-balloon-pci_,_id_:_balloon0_,_bus_:_pci.6_,_addr_:_0x0_}-object{_qom-type_:_rng-random_,_id_:_objrng0_,_filename_:_/dev/urandom_}-device{_driver_:_virtio-rng-pci_,_rng_:_objrng0_,_id_:_rng0_,_bus_:_pci.7_,_addr_:_0x0_}-sandboxon,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny-msgtimestamp=on\", exe=\"/usr/bin/qemu-system-x86_64\", instance=\"scaphandre:8080\", job=\"scaphandre\", pid=\"2093543\"}"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 22,
+        "x": 0,
+        "y": 26
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PDE6745920139CE56"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "scaph_process_power_consumption_microwatts{cmdline=~\".*${process_filter}.*\"}/1000000",
+          "fullMetaSearch": false,
+          "includeNullMetadata": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Scaphandre: Metal / Process Watts",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PDE6745920139CE56"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 21,
+        "x": 0,
+        "y": 35
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PDE6745920139CE56"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "rate(kepler_node_platform_joules_total{job=\"vm\"}[1m])",
+          "fullMetaSearch": false,
+          "includeNullMetadata": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "VM / Platform Watts",
+      "type": "timeseries"
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "qemu",
+          "value": "qemu"
+        },
+        "hide": 0,
+        "name": "process_filter",
+        "options": [
+          {
+            "selected": true,
+            "text": "qemu",
+            "value": "qemu"
+          }
+        ],
+        "query": "qemu",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Model Validation",
+  "uid": "bdi2zl0qvjw1se",
+  "version": 8,
+  "weekStart": ""
+}

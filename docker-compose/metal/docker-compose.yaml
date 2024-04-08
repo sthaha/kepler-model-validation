@@ -84,7 +84,7 @@ services:
       context: ./grafana
     environment:
       GF_SECURITY_ADMIN_PASSWORD: "admin"
-      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: "/var/lib/grafana/dashboards/sample/kepler-dashboard.json"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: "/var/lib/grafana/dashboards/kepler/validation-dashboard.json"
     depends_on:
       - prometheus
     ports:
@@ -92,13 +92,7 @@ services:
     networks:
       - kepler-network
     volumes:
-      - type: bind
-        source: "./grafana/dashboards/kepler-dashboard.json"
-        target: "/var/lib/grafana/dashboards/sample/kepler-dashboard.json"
-
-      - type: bind
-        source: "./grafana/dashboards/scaphandre-dashboard.json"
-        target: "/var/lib/grafana/dashboards/sample/scaphandre-dashboard.json"
+      - "./grafana/dashboards:/var/lib/grafana/dashboards:z"
 
 volumes:
   promdata-kepler:
