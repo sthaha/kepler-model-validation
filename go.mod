@@ -12,7 +12,7 @@ require (
 	github.com/jaypipes/ghw v0.12.0
 	github.com/joho/godotenv v1.5.1
 	github.com/jszwec/csvutil v1.8.0
-	github.com/klauspost/cpuid/v2 v2.2.6
+	github.com/klauspost/cpuid/v2 v2.2.7
 	github.com/onsi/ginkgo/v2 v2.15.0
 	github.com/onsi/gomega v1.31.1
 	github.com/opencontainers/runc v1.1.12

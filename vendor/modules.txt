@@ -174,7 +174,7 @@ github.com/json-iterator/go
 # github.com/jszwec/csvutil v1.8.0
 ## explicit; go 1.18
 github.com/jszwec/csvutil
-# github.com/klauspost/cpuid/v2 v2.2.6
+# github.com/klauspost/cpuid/v2 v2.2.7
 ## explicit; go 1.15
 github.com/klauspost/cpuid/v2
 # github.com/mailru/easyjson v0.7.7
