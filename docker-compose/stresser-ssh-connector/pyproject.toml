@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=69.2.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ssh-stresser-connector"
+version = "0.0.1"
+dependencies = [
+  "paramiko>=2.12.0",
+]
+requires-python = ">=3.11"
+
+description = "ssh tool to access and a virtual machine and run a stress-ng bash script suite for energy metric validation"
+readme = "README.md"
+license = {file = "LICENSE"}
+
+
