@@ -11,8 +11,8 @@ github.com/NVIDIA/go-nvml/pkg/nvml
 # github.com/StackExchange/wmi v1.2.1
 ## explicit; go 1.13
 github.com/StackExchange/wmi
-# github.com/aquasecurity/libbpfgo v0.4.9-libbpf-1.2.0
-## explicit; go 1.18
+# github.com/aquasecurity/libbpfgo v0.7.0-libbpf-1.4
+## explicit; go 1.21
 github.com/aquasecurity/libbpfgo
 # github.com/beorn7/perks v1.0.1
 ## explicit; go 1.11
@@ -292,8 +292,8 @@ github.com/sirupsen/logrus
 # github.com/spf13/pflag v1.0.5
 ## explicit; go 1.12
 github.com/spf13/pflag
-# github.com/stretchr/testify v1.8.4
-## explicit; go 1.20
+# github.com/stretchr/testify v1.9.0
+## explicit; go 1.17
 github.com/stretchr/testify/assert
 # golang.org/x/exp v0.0.0-20231006140011-7918f672742d
 ## explicit; go 1.20
