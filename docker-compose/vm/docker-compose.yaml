@@ -56,7 +56,7 @@ services:
     command:
       - -u
       - src/estimate/estimator.py
-    image: quay.io/sustainable_computing_io/kepler_model_server:v0.7.7
+    image: quay.io/sustainable_computing_io/kepler_model_server:latest
 
     volumes:
       - type: bind
@@ -77,7 +77,7 @@ services:
     command:
       - -u
       - src/server/model_server.py
-    image: quay.io/sustainable_computing_io/kepler_model_server:v0.7.7
+    image: quay.io/sustainable_computing_io/kepler_model_server:latest
     volumes:
       - type: bind
         source: ./kepler/etc/kepler
