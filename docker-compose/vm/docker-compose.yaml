@@ -43,9 +43,7 @@ services:
           sleep 1;
         done;
         echo "starting kepler";
-        echo /usr/bin/kepler 
-          -address="0.0.0.0:9100"
-          -v="8";
+        set -x;
         /usr/bin/kepler
           -address="0.0.0.0:9100"
           -v="8"
