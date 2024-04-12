@@ -3,14 +3,44 @@ import time
 from typing import Tuple
 from datetime import datetime
 
-stressor_command_path = './Documents/kepler-model-validation/docker-compose/vm/stressor.sh'
 
-def ssh_vm_instance(output, vm_ip_address, username, script_path, vm_port=22, password=None, private_ssh_key=None) -> Tuple[datetime, datetime, float]:
-    output("connecting to virtual machine via ssh")
+class ScriptResult:
+    def __init__(self, start_time, end_time, duration):
+        self.start_time = start_time
+        self.end_time = end_time
+        self.output = end_time
+
+
+class Remote: 
+    def __init__(self, ip, script_path, key, user, port, password):
+        self.ip = ip
+        self.key = key
+        self.user = user
+        self.port = port
+        self.password = password
+        self.ssh_client = paramiko.SSHClient()
+
+
+
+    def __repr__(self):
+        return f"<Remote {self.user}@{self.ip}>"
+    
+    def run_script(self, script_path):
+        pass
+
+
+def ssh_vm_instance(vm_ip_address, username, script_path, vm_port=22, password=None, pkey_path=None) -> Tuple[datetime, datetime]:
+    print("connecting to virtual machine via ssh")
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh_client.connect(hostname=vm_ip_address, port=vm_port, username=username, password=password, pkey=private_ssh_key)
-    output(f"successfully connected to: {username}. running stress test")
+
+    if pkey_path is not None:
+        pkey = paramiko.RSAKey.from_private_key_file(pkey_path)
+        ssh_client.connect(hostname=vm_ip_address, port=vm_port, username=username, pkey=pkey)
+    else:
+        ssh_client.connect(hostname=vm_ip_address, port=vm_port, username=username, password=password)
+
+    print(f"successfully connected to: {username}. running stress test")
 
     start_time = time.time()
 
@@ -22,30 +52,18 @@ def ssh_vm_instance(output, vm_ip_address, username, script_path, vm_port=22, pa
     ssh_client.close()
 
     if exit_status == 0:
-        output("script execution successful")
+        print("script execution successful")
     else:
-        output("script execution failed")
+        print("script execution failed")
         
-    output("logs for stress test:")
+    print("logs for stress test:")
     for line in stdout:
-        output(line.strip())
-    output("stderr output:")
+        print(line.strip())
+    print("stderr output:")
     for line in stderr:
-        output(line.strip())
+        print(line.strip())
 
-    duration = end_time - start_time
     start_time_datetime = datetime.fromtimestamp(start_time)
     end_time_datetime = datetime.fromtimestamp(end_time)
-    return start_time_datetime, end_time_datetime, duration
-
-
-if __name__ == "__main__":
-    # SSH credentials
-    ssh_host_address_to_vm = '192.168.122.51'
-    ssh_port = 22
-    ssh_username = 'whisper'
-    # employ ssh keys to avoid password usage
-    #ssh_password = ''
-    start_time, end_time, duration = ssh_vm_instance(vm_ip_address=ssh_host_address_to_vm, script_path=stressor_command_path, vm_port=ssh_port, username=ssh_username)
-    print(start_time, end_time, duration)
+    return start_time_datetime, end_time_datetime
 
