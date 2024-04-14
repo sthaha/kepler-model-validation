@@ -3,8 +3,9 @@
 # SPDX-License-Identifier: APACHE-2.0
 import click
 from validator.__about__ import __version__
-
-from validator.stresser.stresser import ssh_vm_instance
+from validator.stresser.stresser import ( 
+    ssh_vm_instance,
+)
 from validator.prom_query_validator.prom_query_validator import (
     PromMetricsValidator, deltas_func, percentage_err
 )
@@ -13,9 +14,9 @@ from validator.prom_query_validator.prom_query_validator import (
 import statistics
 
 PROM_QUERIES = {
-    "vm_process_joules_total": "kepler_process_package_joules_total{pid='{}', job='metal'}",
-    "platform_joules_vm": "kepler_node_platform_joules_total{job='vm'}",
-    "platform_joules_vm_bm" : "kepler_vm_platform_joules_total{job='metal'}"
+    "vm_process_joules_total": {"name": "kepler_process_package_joules_total", "base_labels": {"job": "metal", "pid": "2093543"}},
+    "platform_joules_vm": {"name": "kepler_node_platform_joules_total", "base_labels": {"job": "vm"}},
+    # "platform_joules_vm_bm" : "kepler_vm_platform_joules_total{job='metal'}"
 }
 
 #TODO: decide where to keep the scripts 
@@ -82,19 +83,22 @@ def stress(remote: Remote, vm_pid: str):
 
 
     # TODO: clean up
-    # expected_query = PROM_QUERIES["vm_process_joules_total"].format(vm_pid)
-
-    expected_query = "kepler_process_package_joules_total{pid='2093543', job='metal'}"
-    actual_query = PROM_QUERIES["platform_joules_vm"]
+    expected_query_config = PROM_QUERIES["vm_process_joules_total"]
+    expected_query_modified_labels = expected_query_config["base_labels"].copy()
+    expected_query_modified_labels["pid"] = vm_pid
+    #expected_query = "kepler_process_package_joules_total{pid='2093543', job='metal'}"
+    actual_query_config = PROM_QUERIES["platform_joules_vm"]
 
     prom_validator = PromMetricsValidator(prom_endpoint=remote.prom_endpoint, disable_ssl=True)
     validator_data, validated_data = prom_validator.compare_metrics(
         start_time=start_time, 
         end_time=end_time, 
-        expected_query=expected_query, 
-        actual_query=actual_query,
+        expected_query=expected_query_config["name"],
+        expected_query_labels=expected_query_modified_labels,
+        actual_query=actual_query_config["name"],
+        actual_query_labels=actual_query_config["base_labels"]
     )
-
+    print(validator_data)
     # NOTE: calc
     percentage_error = percentage_err(validator_data, validated_data)
     absolute_error = deltas_func(validator_data, validated_data)
@@ -102,9 +106,10 @@ def stress(remote: Remote, vm_pid: str):
     mape = statistics.mean(percentage_error)
 
     # TODO: print what the values mean
-    click.secho(str(absolute_error), fg='green')
-    click.secho(str(percentage_error), fg='blue')
-    click.secho("-----------------------------", fg="white")
-    click.secho(str(mae), fg="red")
-    click.secho(str(mape), fg="red")
+    click.secho("Validation results during stress test:")
+    click.secho(f"Absolute Errors during stress test: {absolute_error}", fg='green')
+    click.secho(f"Absolute Percentage Errors during stress test: {percentage_error}", fg='green')
+    click.secho(f"Mean Absolute Error (MAE) during stress test: {mae}", fg="blue")
+    click.secho(f"Mean Absolute Percentage Error (MAPE) during stress test: {mape}", fg="blue")
+
 
