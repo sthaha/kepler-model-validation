@@ -10,7 +10,7 @@ class PromMetricsValidator:
         
 
 
-    def compare_metrics(self, start_time: datetime, end_time: datetime, expected_query: str, actual_query: str) -> Tuple[List[float], List[float]]:
+    def compare_metrics(self, start_time: datetime, end_time: datetime, expected_query: str, expected_query_labels: dict, actual_query: str, actual_query_labels: dict) -> Tuple[List[float], List[float]]:
         # parsed_start_time = parse_datetime(start_time)
         # if parsed_start_time is None:
         #     raise ValueError("Invalid start time")
@@ -21,13 +21,15 @@ class PromMetricsValidator:
 
 
         expected_result = self.prom_client.get_metric_range_data(
-            expected_query,
+            metric_name=expected_query,
+            label_config=expected_query_labels.copy(),
             start_time=start_time,
             end_time=end_time,
         )
 
         actual_metrics = self.prom_client.get_metric_range_data(
-            actual_query,
+            metric_name=actual_query,
+            label_config=actual_query_labels.copy(),
             start_time=start_time,
             end_time=end_time,
         )
