@@ -36,14 +36,14 @@ scrape_configs:
          # scheme defaults to 'http'.
 
     static_configs:
-      - targets: ['kepler:9100']
+      - targets: ['kepler:8888']
 
   - job_name: 'metal-mods'
          # metrics_path defaults to '/metrics'
          # scheme defaults to 'http'.
     static_configs:
-      - targets: ['kepler-mods:9100']
+      - targets: ['kepler-mods:8888']
 
   - job_name: 'vm'
     static_configs:
-      - targets: ['192.168.124.28:9100']
+      - targets: ['vm:9100']
