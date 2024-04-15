@@ -25,12 +25,6 @@ services:
     command:
       - |
         echo Starting kepler;
-        # NOTE: uncomment to wait for estimator container
-        # echo waiting for estimator socket to be ready;
-        # until [[ -e /tmp/estimator.sock ]]; do
-        #   echo " ... waiting for socket";
-        #   sleep 1;
-        # done;
         set -x;
         /usr/bin/kepler \
           -address "0.0.0.0:8888" \
