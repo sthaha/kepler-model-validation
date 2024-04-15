@@ -98,7 +98,7 @@ services:
       - "3000:3000"
     networks:
       - kepler-network
-    user: 1000 # NOTE: change this to `id -u`
+    user: "1000" # NOTE: change this to `id -u`
     volumes:
       - "./grafana/dashboards:/var/lib/grafana/dashboards:z"
 
