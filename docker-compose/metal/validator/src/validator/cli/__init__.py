@@ -106,7 +106,7 @@ def validator(ctx: click.Context, config_file: str):
 @validator.command()
 @click.option(
     "--script-path", "-s", 
-    default="~/kepler-model-validation/docker-compose/vm/stressor.sh", 
+    default="scripts/stressor.sh", 
     type=str,
 )
 @pass_config

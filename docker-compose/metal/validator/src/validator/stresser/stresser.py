@@ -42,13 +42,19 @@ def run_script(host, username, script_path, port=22, password=None, pkey_path=No
 
     print(f"successfully connected to: {username}@{host}. Running stress test ...")
 
+    target_script = "/tmp/stress.sh"
+
+    sftp_client = ssh_client.open_sftp()
+    print(f"copying script {script_path} to remote - {target_script}")
+    sftp_client.put(script_path, target_script)
+    sftp_client.close()
+    print(f"copying script {script_path} to remote - {target_script} - successfull")
+    ssh_client.exec_command(f"chmod +x {target_script}")
+
     start_time = time.time()
-
-    _, stdout, stderr = ssh_client.exec_command(script_path)
-    exit_status = stdout.channel.recv_exit_status()
-
+    _, stdout, stderr = ssh_client.exec_command(target_script)
     end_time = time.time()
-
+    exit_status = stdout.channel.recv_exit_status()
     ssh_client.close()
 
     if exit_status == 0:
@@ -58,10 +64,11 @@ def run_script(host, username, script_path, port=22, password=None, pkey_path=No
         
     print("logs for stress test:")
     for line in stdout:
-        print(line.strip())
+        print("  ", line.strip())
+
     print("stderr output:")
     for line in stderr:
-        print(line.strip())
+        print(" ", line.strip())
 
     start_time_datetime = datetime.fromtimestamp(start_time)
     end_time_datetime = datetime.fromtimestamp(end_time)
