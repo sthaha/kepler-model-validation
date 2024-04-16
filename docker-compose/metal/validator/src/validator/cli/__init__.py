@@ -24,6 +24,7 @@ class Remote(NamedTuple):
     host: str
     port: int
     user: str
+    password: str
     pkey: str
 
     def __repr__(self):
@@ -67,6 +68,7 @@ def load_config(config_file: str) -> Config:
         host=remote_config['host'],
         port=remote_config.get('port', 22),
         user=remote_config.get('username', 'fedora'),
+        password=remote_config.get('password', None),
         pkey=os.path.expanduser(remote_config.get('pkey', '~/.ssh/id_rsa')),
     )
 
@@ -121,6 +123,7 @@ def stress(cfg: Config, script_path: str):
         host=remote.host,
         port=remote.port,
         username=remote.user,
+        password=remote.password,
         pkey_path=remote.pkey,
         script_path=script_path,
     )

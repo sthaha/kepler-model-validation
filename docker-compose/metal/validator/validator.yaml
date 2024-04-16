@@ -3,6 +3,7 @@ remote:
   # defaults
   # port: 22
   # username: fedora
+  # password: supersecret # RECOMMENDED: use pkey auth instead
   # pkey: ~/.ssh/id_rsa
   pkey: ~/.ssh/kvm
 

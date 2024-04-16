@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   kepler:
     image: quay.io/sustainable_computing_io/kepler:latest
@@ -86,7 +84,6 @@ volumes:
   kepler-tmp:
   estimator-mnt:
   model-server-mnt:
-
 
 networks:
   kepler-network:
