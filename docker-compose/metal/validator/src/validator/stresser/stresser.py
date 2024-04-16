@@ -53,8 +53,8 @@ def run_script(host, username, script_path, port=22, password=None, pkey_path=No
 
     start_time = time.time()
     _, stdout, stderr = ssh_client.exec_command(target_script)
-    end_time = time.time()
     exit_status = stdout.channel.recv_exit_status()
+    end_time = time.time()
     ssh_client.close()
 
     if exit_status == 0:
