@@ -27,8 +27,8 @@ dependencies = [
   "click",
   "paramiko",
   "prometheus-api-client",
+	"pyyaml",
 	# "pydantic",
-	# "pyyaml",
 	# "requests",
 	# "rich",
 ]

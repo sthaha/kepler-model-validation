@@ -29,18 +29,18 @@ class Remote:
         pass
 
 
-def ssh_vm_instance(vm_ip_address, username, script_path, vm_port=22, password=None, pkey_path=None) -> Tuple[datetime, datetime]:
-    print("connecting to virtual machine via ssh")
+def run_script(host, username, script_path, port=22, password=None, pkey_path=None) -> Tuple[datetime, datetime]:
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
+    print(f"ssh -> {username}@{host}")
     if pkey_path is not None:
         pkey = paramiko.RSAKey.from_private_key_file(pkey_path)
-        ssh_client.connect(hostname=vm_ip_address, port=vm_port, username=username, pkey=pkey)
+        ssh_client.connect(hostname=host, port=port, username=username, pkey=pkey)
     else:
-        ssh_client.connect(hostname=vm_ip_address, port=vm_port, username=username, password=password)
+        ssh_client.connect(hostname=host, port=port, username=username, password=password)
 
-    print(f"successfully connected to: {username}. running stress test")
+    print(f"successfully connected to: {username}@{host}. Running stress test ...")
 
     start_time = time.time()
 

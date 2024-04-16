@@ -1,12 +1,11 @@
 from prometheus_api_client import PrometheusConnect
-from prometheus_api_client.utils import parse_datetime
 from typing import Tuple, List
 from datetime import datetime
 
 #TODO: Include Environment Variables if desired
 class PromMetricsValidator:
-    def __init__(self, prom_endpoint: str, headers=None, disable_ssl=True) -> None:
-        self.prom_client = PrometheusConnect(prom_endpoint, headers=None, disable_ssl=disable_ssl)
+    def __init__(self, endpoint: str, headers=None, disable_ssl=True) -> None:
+        self.prom_client = PrometheusConnect(endpoint, headers=None, disable_ssl=disable_ssl)
         
 
 
