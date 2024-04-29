@@ -8,13 +8,15 @@ from validator.stresser.stresser import (
     run_script,
 )
 from validator.prom_query_validator.prom_query_validator import (
-    PromMetricsValidator, deltas_func, percentage_err
+    PromMetricsValidator, 
+    absolute_percentage_error,
+    absolute_error,
+    mean_absolute_error,
+    mean_absolute_percentage_error
+
 )
 import yaml
 from typing import NamedTuple
-
-
-import statistics
 
 
 #TODO: decide where to keep the scripts 
@@ -145,7 +147,7 @@ def stress(cfg: Config, script_path: str):
         endpoint=cfg.prometheus.url,
         disable_ssl=True,
     )
-    validator_data, validated_data = prom_validator.compare_metrics(
+    expected_data, actual_data = prom_validator.compare_metrics(
         start_time=start_time, 
         end_time=end_time, 
         expected_query=expected_query_config["name"],
@@ -153,12 +155,11 @@ def stress(cfg: Config, script_path: str):
         actual_query=actual_query_config["name"],
         actual_query_labels=actual_query_config["base_labels"]
     )
-    print(validator_data)
     # NOTE: calc
-    percentage_error = percentage_err(validator_data, validated_data)
-    absolute_error = deltas_func(validator_data, validated_data)
-    mae = statistics.mean(absolute_error)
-    mape = statistics.mean(percentage_error)
+    percentage_error = absolute_percentage_error(expected_data, actual_data)
+    absolute_error = absolute_error(expected_data, actual_data)
+    mae = mean_absolute_error(expected_data, actual_data)
+    mape = mean_absolute_percentage_error(expected_data, actual_data)
 
     # TODO: print what the values mean
     click.secho("Validation results during stress test:")
